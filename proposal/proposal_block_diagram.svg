@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1188" height="612" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!--WillInclude_umdx-->
+<path d="M 900.00 324.00 L 1188.00 324.00 L 1188.00 612.00 L 900.00 612.00 Z M 900.00 324.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="white"  />
+
+<text x="994.97" y="355.74" font-family="Helvetica" font-size="12.00px" fill="black" opacity="1.00" font-weight="bold" >Pixel Raytracers*</text>
+<path d="M 252.00 72.00 L 468.00 72.00 L 468.00 360.00 L 252.00 360.00 Z M 252.00 72.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="white"  />
+
+<text x="304.99" y="103.74" font-family="Helvetica" font-size="12.00px" fill="black" opacity="1.00" font-weight="bold" >Display Controllers</text>
+<path d="M 288.00 252.00 L 432.00 252.00 L 432.00 324.00 L 288.00 324.00 Z M 288.00 252.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="white"  />
+
+<text x="337.32" y="292.74" font-family="Helvetica" font-size="12.00px" fill="black" opacity="1.00" >renderer</text>
+<path d="M 288.00 144.00 L 432.00 144.00 L 432.00 216.00 L 288.00 216.00 Z M 288.00 144.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="white"  />
+
+<text x="322.31" y="184.74" font-family="Helvetica" font-size="12.00px" fill="black" opacity="1.00" >vga_controller</text>
+<path d="M 360.00 234.00 L 360.00 252.00 M 358.62 245.50 L 360.00 252.00 L 361.38 245.50" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 360.00 216.00 L 360.00 252.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 51.08 144.00 L 182.43 144.00 L 131.35 216.00 L 0.00 216.00 Z M 51.08 144.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="white"  />
+
+<text x="25.54" y="184.74" font-family="Helvetica" font-size="12.00px" fill="black" opacity="1.00" >  VGA_HS, VGA_VS</text>
+<path d="M 51.08 252.00 L 182.43 252.00 L 131.35 324.00 L 0.00 324.00 Z M 51.08 252.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="white"  />
+
+<text x="25.54" y="292.74" font-family="Helvetica" font-size="12.00px" fill="black" opacity="1.00" >  RED, GREEN, BLUE</text>
+<path d="M 188.19 180.00 L 155.59 180.00 M 162.09 178.62 L 155.59 180.00 L 162.09 181.38" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 288.00 180.00 L 155.59 180.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 188.19 288.00 L 155.59 288.00 M 162.09 286.62 L 155.59 288.00 L 162.09 289.38" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 288.00 288.00 L 155.59 288.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 576.00 216.00 L 792.00 216.00 L 792.00 360.00 L 576.00 360.00 Z M 576.00 216.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="white"  />
+
+<text x="587.99" y="297.48" font-family="Helvetica" font-size="24.00px" fill="black" opacity="1.00" font-weight="bold" >On Chip Memory</text>
+<path d="M 464.60 288.00 L 432.00 288.00 M 438.50 286.62 L 432.00 288.00 L 438.50 289.38" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 576.00 288.00 L 432.00 288.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 612.00 108.00 L 756.00 108.00 L 756.00 180.00 L 612.00 180.00 Z M 612.00 108.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="white"  />
+
+<text x="640.97" y="148.74" font-family="Helvetica" font-size="12.00px" fill="black" opacity="1.00" >cache_manager</text>
+<path d="M 936.00 0.00 L 1152.00 0.00 L 1152.00 288.00 L 936.00 288.00 Z M 936.00 0.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="white"  />
+
+<text x="1000.00" y="153.48" font-family="Helvetica" font-size="24.00px" fill="black" opacity="1.00" font-weight="bold" >SDRAM</text>
+<path d="M 464.60 270.00 L 432.00 270.00 M 438.50 268.62 L 432.00 270.00 L 438.50 271.38" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 612.00 144.00 L 522.00 144.00 L 522.00 270.00 L 432.00 270.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 648.00 189.00 L 648.00 180.00 M 649.38 186.50 L 648.00 180.00 L 646.62 186.50" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 630.00 216.00 L 630.00 198.00 L 648.00 198.00 L 648.00 180.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 738.00 207.00 L 738.00 216.00 M 736.62 209.50 L 738.00 216.00 L 739.38 209.50" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 720.00 180.00 L 720.00 198.00 L 738.00 198.00 L 738.00 216.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 903.40 72.00 L 936.00 72.00 M 929.50 73.38 L 936.00 72.00 L 929.50 70.62" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 756.00 126.00 L 846.00 126.00 L 846.00 72.00 L 936.00 72.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 788.60 162.00 L 756.00 162.00 M 762.50 160.62 L 756.00 162.00 L 762.50 163.38" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 936.00 216.00 L 846.00 216.00 L 846.00 162.00 L 756.00 162.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 972.00 396.00 L 1116.00 396.00 L 1116.00 468.00 L 972.00 468.00 Z M 972.00 396.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="white"  />
+
+<text x="1000.97" y="436.74" font-family="Helvetica" font-size="12.00px" fill="black" opacity="1.00" >scene_manager</text>
+<path d="M 936.00 504.00 L 1044.00 504.00 L 1044.00 576.00 L 936.00 576.00 Z M 936.00 504.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="white"  />
+
+<text x="951.32" y="544.74" font-family="Helvetica" font-size="12.00px" fill="black" opacity="1.00" >raytracer_core</text>
+<path d="M 824.60 288.00 L 792.00 288.00 M 798.50 286.62 L 792.00 288.00 L 798.50 289.38" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 972.00 432.00 L 882.00 432.00 L 882.00 288.00 L 792.00 288.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 939.40 414.00 L 972.00 414.00 M 965.50 415.38 L 972.00 414.00 L 965.50 412.62" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 756.00 144.00 L 864.00 144.00 L 864.00 211.00 L 864.00 211.00 C 861.24 211.00 859.00 213.24 859.00 216.00 L 859.00 216.00 C 859.00 218.76 861.24 221.00 864.00 221.00 L 864.00 283.00 L 864.00 283.00 C 861.24 283.00 859.00 285.24 859.00 288.00 L 859.00 288.00 C 859.00 290.76 861.24 293.00 864.00 293.00 L 864.00 414.00 L 877.00 414.00 L 877.00 414.00 C 877.00 416.76 879.24 419.00 882.00 419.00 L 882.00 419.00 C 884.76 419.00 887.00 416.76 887.00 414.00 L 972.00 414.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 1044.00 504.00 L 1152.00 504.00 L 1152.00 576.00 L 1044.00 576.00 Z M 1044.00 504.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="white"  />
+
+<text x="1059.32" y="544.74" font-family="Helvetica" font-size="12.00px" fill="black" opacity="1.00" >raytracer_core</text>
+<path d="M 990.00 495.00 L 990.00 504.00 M 988.62 497.50 L 990.00 504.00 L 991.38 497.50" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 1008.00 468.00 L 1008.00 486.00 L 990.00 486.00 L 990.00 504.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 1008.00 477.00 L 1008.00 468.00 M 1009.38 474.50 L 1008.00 468.00 L 1006.62 474.50" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 990.00 504.00 L 990.00 486.00 L 1008.00 486.00 L 1008.00 468.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 1098.00 495.00 L 1098.00 504.00 M 1096.62 497.50 L 1098.00 504.00 L 1099.38 497.50" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 1080.00 468.00 L 1080.00 486.00 L 1098.00 486.00 L 1098.00 504.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 1080.00 477.00 L 1080.00 468.00 M 1081.38 474.50 L 1080.00 468.00 L 1078.62 474.50" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+<path d="M 1098.00 504.00 L 1098.00 486.00 L 1080.00 486.00 L 1080.00 468.00" stroke-width="1.00" stroke="black" stroke-linecap="round" stroke-linejoin="round" fill="none"  />
+
+
+</svg>
+<!--OldSVGSize:9763 -->
+<!--Data_umdx_bIncluded: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-->
