@@ -1,6 +1,8 @@
 # Ignore all 
 *
 
+!.gitignore
+
 # track any files with extensions
 !prototyping/*.*
 
