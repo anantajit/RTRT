@@ -1,10 +1,10 @@
 # Ignore all 
 *
 
-!.gitignore
-
 # track any files with extensions
 !**/*.*
+
+**/.DS_Store
 
 # track any files with extensions in any folder
 
