@@ -2,23 +2,25 @@
 *
 
 # track any files with extensions
-!*.*
+!**/*.*
+
+# track any files with extensions in any folder
 
 # ignore any PDFs
 *.pdf
 
 # ignore all compiled systemverilog folders
-RTRT/*
+*/RTRT/*
 
 # track the following
 # systemverilog
-!RTRT/*.sv
+!*/RTRT/*.sv
 # quartus project file
-!RTRT/*.qpf
+!*/RTRT/*.qpf
 # quartus IP 
-!RTRT/*.qip
+!*/RTRT/*.qip
 # verilog
-!RTRT/*.v
+!*/RTRT/*.v
 # pin planner
-!RTRT/*.ppf 
+!*/RTRT/*.ppf 
 
