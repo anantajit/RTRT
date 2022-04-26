@@ -1,0 +1,24 @@
+# Ignore all 
+*
+
+# track any files with extensions
+!*.*
+
+# ignore any PDFs
+*.pdf
+
+# ignore all compiled systemverilog folders
+RTRT/*
+
+# track the following
+# systemverilog
+!RTRT/*.sv
+# quartus project file
+!RTRT/*.qpf
+# quartus IP 
+!RTRT/*.qip
+# verilog
+!RTRT/*.v
+# pin planner
+!RTRT/*.ppf 
+
