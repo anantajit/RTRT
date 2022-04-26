@@ -9,8 +9,10 @@
 
 # remove all mac extensions
 .DS_Store
+*.swp # any swap file
+*.bak # any backup file
 
-# do not track anything in RTRT
+# do not track anything in RTRT... Quartus creates many metadata files
 RTRT/*
 
 # track the following
