@@ -11,14 +11,14 @@
 
 # track the following
 # systemverilog
-!**/*.sv
+!*.sv
 # quartus project file
-!**/*.qpf
+!*.qpf
 # quartus IP 
-!**/*.qip
+!*.qip
 # verilog
-!**/*.v
+!*.v
 # pin planner
-!**/*.ppf 
+!*.ppf 
 # c files
-!**/*.c
+!*.c
