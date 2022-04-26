@@ -2,7 +2,7 @@
 *
 
 # track any files with extensions
-!**/*.*
+!prototyping/*.*
 
 # track any files with extensions in any folder
 
