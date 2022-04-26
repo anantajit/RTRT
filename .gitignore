@@ -4,6 +4,7 @@
 # track any files with extensions
 !**/*.*
 
+# remove all mac extensions
 **/.DS_Store
 
 # track any files with extensions in any folder
@@ -11,18 +12,15 @@
 # ignore any PDFs
 *.pdf
 
-# ignore all compiled systemverilog folders
-*/RTRT/*
-
 # track the following
 # systemverilog
-!*/RTRT/*.sv
+!**/*.sv
 # quartus project file
-!*/RTRT/*.qpf
+!**/*.qpf
 # quartus IP 
-!*/RTRT/*.qip
+!**/*.qip
 # verilog
-!*/RTRT/*.v
+!**/*.v
 # pin planner
-!*/RTRT/*.ppf 
+!**/*.ppf 
 
