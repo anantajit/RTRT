@@ -8,9 +8,10 @@
 !*/
 
 # remove all mac extensions
-**/.DS_Store
+.DS_Store
 
-# track any files with extensions in any folder
+# do not track anything in RTRT
+RTRT/*
 
 # track the following
 # systemverilog
