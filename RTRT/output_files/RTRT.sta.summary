@@ -1,0 +1,89 @@
+------------------------------------------------------------
+Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow 1200mV 85C Model Setup 'SDRAM_PLL|altpll_component|auto_generated|pll1|clk[1]'
+Slack : -0.198
+TNS   : -1.718
+
+Type  : Slow 1200mV 85C Model Setup 'SDRAM_PLL|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 4.213
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'SDRAM_PLL|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 0.323
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'SDRAM_PLL|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.341
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'SDRAM_PLL|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 4.667
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'SDRAM_PLL|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 4.710
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'CLK'
+Slack : 9.851
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Setup 'SDRAM_PLL|altpll_component|auto_generated|pll1|clk[1]'
+Slack : -0.115
+TNS   : -0.720
+
+Type  : Slow 1200mV 0C Model Setup 'SDRAM_PLL|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 4.714
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'SDRAM_PLL|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 0.290
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'SDRAM_PLL|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.306
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'SDRAM_PLL|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 4.685
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'SDRAM_PLL|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 4.688
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'CLK'
+Slack : 9.798
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Setup 'SDRAM_PLL|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 0.443
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Setup 'SDRAM_PLL|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 7.164
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'SDRAM_PLL|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 0.141
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'SDRAM_PLL|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 0.148
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'SDRAM_PLL|altpll_component|auto_generated|pll1|clk[0]'
+Slack : 4.710
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'SDRAM_PLL|altpll_component|auto_generated|pll1|clk[1]'
+Slack : 4.720
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'CLK'
+Slack : 9.660
+TNS   : 0.000
+
+------------------------------------------------------------
