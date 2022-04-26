@@ -4,6 +4,9 @@
 # track any files with extensions
 !**/*.*
 
+# track all directories
+!*/
+
 # remove all mac extensions
 **/.DS_Store
 
