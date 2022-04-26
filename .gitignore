@@ -9,9 +9,6 @@
 
 # track any files with extensions in any folder
 
-# ignore any PDFs
-*.pdf
-
 # track the following
 # systemverilog
 !**/*.sv
@@ -23,4 +20,5 @@
 !**/*.v
 # pin planner
 !**/*.ppf 
-
+# c files
+!**/*.c
