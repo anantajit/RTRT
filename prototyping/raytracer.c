@@ -14,7 +14,8 @@ int main(void) {
 	// X, Y, Z, Radius
     int sphere[4] = {300, 200, f + 100, 100};
 
-    int light[3] = {320, 275, f}; // right above sphere, closer to camera
+    int intensity = 1000000;
+    int light[3] = {320, 100, f}; // right above sphere, closer to camera
 
 	int x, y;
 
@@ -53,15 +54,14 @@ int main(void) {
             
             int epsilon = 1;
             
-            unsigned char exposed_light;
+            unsigned int exposed_light;
             exposed_light = 10;
             
             if(b * b > 4 * a * c){ // there is a collision
                 t = (-b - sqrt(b * b - 4 * a * c)); // t*c value
-                long light_projection = (light[0] - cx) * (light[0] - cx) + (light[1] - cy) * (light[1] - cy) + (light[2] - cz) * (light[2] - cz);
+                long distance = (light[0] - cx) * (light[0] - cx) + (light[1] - cy) * (light[1] - cy) + (light[2] - cz) * (light[2] - cz);
                 if(t > epsilon) { // some epsilon value... if the collision is caused NOT by the first bounce point
-                    
-                        exposed_light = 255 - sqrt(light_projection); // no collision should be bright
+                        exposed_light = intensity/distance; // no collision should be bright
                 }
             }
             else
@@ -69,11 +69,13 @@ int main(void) {
             
             if(exposed_light < 25)
                 exposed_light = 25;
+            else if(exposed_light > 255)
+                exposed_light = 255;
             
             if(intersect_sphere){
                 R = exposed_light;
                 G = R; // draw the realized circle in white
-                B = R;
+                B = 0;
 //                printf("INTERSECT: (%d, %d) -> %d\n", x, y, b * b - 4 * a * c);
             }
             else {
