@@ -67,14 +67,14 @@ int raytracer(void) {
 		for (x = 0; x < width; x+=resolution) {
 			unsigned char R, G, B; // Set RGB
 
-			int ix1[3], ix2[3], ix3[3];
+			int ix1[3], strike_pt[3], ix3[3];
 			int screen_pixel[3] = {x, y, f};
 
-			char intersect_sphere = ray_sphere_intersection(sphere, camera, screen_pixel, ix1, ix2, 0, 0); // ix2 is closer than ix1
+			char intersect_sphere = ray_sphere_intersection(sphere, camera, screen_pixel, ix1, strike_pt, 0, 0); // ix2 is closer than ix1
 
 			if(intersect_sphere){
                 // check for intersection between the collision point and the light source
-                intersect_sphere = ray_sphere_intersection(sphere, ix2, light, ix1, ix3, 1, 10);
+                intersect_sphere = ray_sphere_intersection(sphere, strike_pt, light, ix1, ix3, 1, 5);
                 
                 if(intersect_sphere) {
                     R = 50;

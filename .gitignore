@@ -12,6 +12,9 @@
 *.swp # any swap file
 *.bak # any backup file
 
+# within prototyping, do not track binaries
+*.out
+
 # do not track anything in RTRT... Quartus creates many metadata files
 RTRT/*
 
