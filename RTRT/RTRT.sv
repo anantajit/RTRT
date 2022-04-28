@@ -164,24 +164,62 @@ logic[1:0] OCM_A_STATE;
 
 logic  [9:0] RTX, RTY; // Y is at most 120, X is up to 640
 
+always_comb begin
+	if(OCM_A_STATE == 2'b00) begin
+		// initiate a read
+		OCM_WE_A = 1'b0; // do not write
+		OCM_DATAIN_A = 0;
+		OCM_ADDR_A = DrawX + 640 * (DrawY % 120);
+	end else if(OCM_A_STATE == 2'b01) begin
+		// update the buffer
+		OCM_WE_A = 1'b0; // Do not write
+		OCM_DATAIN_A = 0;
+		OCM_ADDR_A = 0;
+		// To truly maximize bandwidth, this should initiate the next write...
+	end else begin
+		OCM_WE_A = 1'b1; // enable writing to memory
+		
+		OCM_ADDR_A = RTX + RTY * 640; // RTY is automatically capped at 120, no mod required
+	
+		if(((RTX/60)%2) ^ ((RTY/60)%2)) // check if this RTX pair lands on a checkerboard
+			OCM_DATAIN_A = 4'b1111;
+		else 
+			OCM_DATAIN_A = 0;
+	end
+
+	
+	if(~blank) begin
+		VGA_R = 0;
+		VGA_G = 0;
+		VGA_B = 0;
+	end else begin
+		VGA_R = R_BUFF;
+		VGA_G = G_BUFF;
+		VGA_B = B_BUFF;
+	end
+	
+end
+
 always_ff @ (posedge MAIN_CLK) begin
 	OCM_A_STATE <= OCM_A_STATE + 1; // increment state every time
 	
-	if(OCM_A_STATE == 2'b01)
-		if(((DrawY/60)%2) ^ ((DrawX/60)%2))
-			R_BUFF <= 4'b1111;
-		else 
-			R_BUFF <= 0;
-	
-	if(~blank) begin
-		VGA_R <= 0;
-		VGA_G <= 0;
-		VGA_B <= 0;
-	end else begin
-		VGA_R <= R_BUFF;
-		VGA_G <= G_BUFF;
-		VGA_B <= B_BUFF;
+	// If writing, update this every pixel
+	if(OCM_A_STATE == 2'b10) begin
+		if(RTX < 639)
+			RTX <= RTX + 1;
+		else begin
+			// overflow X
+			RTX <= 0;
+			// check if the next row is within bounds
+			if(RTY < 63)
+				RTY <= RTY + 1; // increment row
+			else 
+				RTY <= 0; // reset Y... higher SW means that more row should not change
+		end
+	end else if(OCM_A_STATE == 2'b01) begin
+		R_BUFF <= OCM_DATAOUT_A[3:0]; // last four bits are copied to R in the read state... by now the memory data should be stable
 	end
+	
 end
 
 logic  [9:0] DrawX, DrawY;
