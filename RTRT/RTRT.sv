@@ -138,7 +138,6 @@ sdram SDRAM (          // inputs:
 assign OCM_ADDR_A = DRAM_ADDRESS[15:0];
 assign OCM_DATAIN_A = DRAM_ADDRESS[15:0];
 assign OCM_WE_A = 1'b1;
-assign VGA_R = OCM_DATAOUT_A[2:0];
 
 logic [15:0] OCM_ADDR_A, OCM_ADDR_B, OCM_DATAIN_A, OCM_DATAIN_B, OCM_DATAOUT_A, OCM_DATAOUT_B;
 logic OCM_WE_A, OCM_WE_B;
@@ -157,10 +156,23 @@ ocm ONCHIP(
 	
 logic pixel_clk, blank, sync;
 
+
+always_ff @ (posedge MAIN_CLK) begin
+	if(~blank) begin
+		VGA_R <= 0;
+		VGA_G <= 0;
+		VGA_B <= 0;
+	end else begin
+		VGA_R <= (DrawX * 16)/640;
+		VGA_G <= (DrawY * 16)/480;
+		VGA_B <= 255;
+	end
+end
+
 logic  [9:0] DrawX, DrawY;
 
-vga_controller VGA_CONTROLLER (MAIN_CLK, RESET, hs,        // Horizontal sync pulse.  Active low
-								              vs,        // Vertical sync pulse.  Active low
+vga_controller VGA_CONTROLLER (MAIN_CLK, RESET, VGA_HS,        // Horizontal sync pulse.  Active low
+								              VGA_VS,        // Vertical sync pulse.  Active low
 												  pixel_clk, // 25 MHz pixel clock output
 												  blank,     // Blanking interval indicator.  Active low.
 												  sync,      // Composite Sync signal.  Active low.  We don't use it in this lab,

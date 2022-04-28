@@ -24,7 +24,7 @@
 //-------------------------------------------------------------------------
 
 
-module  vga_controller ( input        Clk,       // 50 MHz clock
+module  vga_controller ( input        Clk,       // 100 MHz clock
                                       Reset,     // reset signal
                          output logic hs,        // Horizontal sync pulse.  Active low
 								              vs,        // Vertical sync pulse.  Active low
@@ -42,7 +42,7 @@ module  vga_controller ( input        Clk,       // 50 MHz clock
 	 
 	 // horizontal pixel and vertical line counters
     logic [9:0] hc, vc;
-    logic clkdiv;
+    logic [1:0] clkdiv; // one pixel clock every 4 cycles
     
 	 // signal indicates if ok to display color for a pixel
 	 logic display;
@@ -56,11 +56,11 @@ module  vga_controller ( input        Clk,       // 50 MHz clock
         if (Reset) 
             clkdiv <= 1'b0;
         else 
-            clkdiv <= ~ (clkdiv);
+            clkdiv <= clkdiv + 2'b1;
     end
    
 	//Runs the horizontal counter  when it resets vertical counter is incremented
-   always_ff @ (posedge clkdiv or posedge Reset )
+   always_ff @ (posedge pixel_clk or posedge Reset )
 	begin: counter_proc
 		  if ( Reset ) 
 			begin 
@@ -86,7 +86,7 @@ module  vga_controller ( input        Clk,       // 50 MHz clock
    
 	 //horizontal sync pulse is 96 pixels long at pixels 656-752
     //(signal is registered to ensure clean output waveform)
-    always_ff @ (posedge Reset or posedge clkdiv )
+    always_ff @ (posedge Reset or posedge pixel_clk )
     begin : hsync_proc
         if ( Reset ) 
             hs <= 1'b0;
@@ -99,7 +99,7 @@ module  vga_controller ( input        Clk,       // 50 MHz clock
 	 
     //vertical sync pulse is 2 lines(800 pixels) long at line 490-491
     //(signal is registered to ensure clean output waveform)
-    always_ff @ (posedge Reset or posedge clkdiv )
+    always_ff @ (posedge Reset or posedge pixel_clk )
     begin : vsync_proc
         if ( Reset ) 
            vs <= 1'b0;
@@ -121,7 +121,7 @@ module  vga_controller ( input        Clk,       // 50 MHz clock
     end 
    
     assign blank = display;
-    assign pixel_clk = clkdiv;
+    assign pixel_clk = clkdiv[1];
     
 
 endmodule
