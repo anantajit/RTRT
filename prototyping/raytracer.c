@@ -61,12 +61,15 @@ int raytracer(void) {
     
 	int f = 1000; // smaller FOV means you can see more, but there will be more distortion
 	int camera[3] = {320, 240, 0};
+    
+    int color_idx[2][3] = {{1, 0, 0}, {0, 1, 0}};
+    
 	// X, Y, Z, Radius
     const char SPHERE_COUNT = 2;
-    int sphere_array[SPHERE_COUNT][4] = {{320, 480, f + 200, 200}, {260, 150, f + 200, 50}};
+    int sphere_array[SPHERE_COUNT][4] = {{320, 480, f + 200, 200}, {260, 170, f + 200, 50}};
 	// X, Y, Z, Intensity... for a point source
     const char LIGHT_COUNT = 2;
-    int light_array[LIGHT_COUNT][4] = {{320, -100, f + 200, 100000}, {0, 350, f + 100, 50000}}; // light from the camera
+    int light_array[LIGHT_COUNT][4] = {{320, -100, f + 200, 150000}, {0, 350, f + 100, 50000}}; // light from the camera
     
     
     /* END OF SCENE INFORMATION...*/
@@ -85,6 +88,10 @@ int raytracer(void) {
 
 			int ix1[3], strike_pt[3], ix3[3];
 			int screen_pixel[3] = {x, y, f};
+            
+            char colors[3][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+            
+            char color[3];
 
             char intersect_sphere = 0;
             
@@ -95,8 +102,12 @@ int raytracer(void) {
                 sphere[1] = sphere_array[sphere_idx][1];
                 sphere[2] = sphere_array[sphere_idx][2];
                 sphere[3] = sphere_array[sphere_idx][3];
-                
-                intersect_sphere += ray_sphere_intersection(sphere, camera, screen_pixel, ix1, strike_pt, 0, 0); // ix2 is closer than ix1
+                if (ray_sphere_intersection(sphere, camera, screen_pixel, ix1, strike_pt, 0, 0) && intersect_sphere == 0){
+                    intersect_sphere = 1;
+                    color[0] = colors[sphere_idx][0];
+                    color[1] = colors[sphere_idx][1];
+                    color[2] = colors[sphere_idx][2];
+                }
             }
             
 
@@ -133,18 +144,18 @@ int raytracer(void) {
                         
                         int intensity = (INTENSITY_CALIBRATION * light[3])/(distance2); // how much light to add
                         
-                        if(intensity + R > 255)
+                        if(intensity * color[0] + R > 255)
                             R = 255;
                         else
-                            R += intensity;
-                        if(intensity + G > 255)
+                            R += intensity * color[0];
+                        if(intensity * color[1] + G > 255)
                             G = 255;
                         else
-                            G += intensity;
-                        if(intensity + B > 255)
+                            G += intensity * color[1];
+                        if(intensity * color[2] + B > 255)
                             B = 255;
                         else
-                            B += 0;
+                            B += intensity * color[2];
                     }
                 }
                 
