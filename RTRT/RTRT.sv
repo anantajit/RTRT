@@ -135,13 +135,15 @@ sdram SDRAM (          // inputs:
                       );
 
 
-assign OCM_ADDR_A = DRAM_ADDRESS[15:0];
-assign OCM_DATAIN_A = DRAM_ADDRESS[15:0];
-assign OCM_WE_A = 1'b1;
-
 logic [15:0] OCM_ADDR_A, OCM_ADDR_B, OCM_DATAIN_A, OCM_DATAIN_B, OCM_DATAOUT_A, OCM_DATAOUT_B;
 logic OCM_WE_A, OCM_WE_B;
-							 
+
+/*
+A_READ -> used for VGA output
+A_WRITE -> used by the RT cores
+
+B -> used for the frame buffer manager
+*/							 
 ocm ONCHIP(
 	OCM_ADDR_A,
 	OCM_ADDR_B,
@@ -156,16 +158,29 @@ ocm ONCHIP(
 	
 logic pixel_clk, blank, sync;
 
+logic [3:0] R_BUFF, G_BUFF, B_BUFF;
+
+logic[1:0] OCM_A_STATE;
+
+logic  [9:0] RTX, RTY; // Y is at most 120, X is up to 640
 
 always_ff @ (posedge MAIN_CLK) begin
+	OCM_A_STATE <= OCM_A_STATE + 1; // increment state every time
+	
+	if(OCM_A_STATE == 2'b01)
+		if(((DrawY/60)%2) ^ ((DrawX/60)%2))
+			R_BUFF <= 4'b1111;
+		else 
+			R_BUFF <= 0;
+	
 	if(~blank) begin
 		VGA_R <= 0;
 		VGA_G <= 0;
 		VGA_B <= 0;
 	end else begin
-		VGA_R <= (DrawX * 16)/640;
-		VGA_G <= (DrawY * 16)/480;
-		VGA_B <= 255;
+		VGA_R <= R_BUFF;
+		VGA_G <= G_BUFF;
+		VGA_B <= B_BUFF;
 	end
 end
 
