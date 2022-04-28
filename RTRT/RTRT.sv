@@ -153,4 +153,19 @@ ocm ONCHIP(
 	OCM_WE_B,
 	OCM_DATAOUT_A,
 	OCM_DATAOUT_B);
+	
+	
+logic pixel_clk, blank, sync;
+
+logic  [9:0] DrawX, DrawY;
+
+vga_controller VGA_CONTROLLER (MAIN_CLK, RESET, hs,        // Horizontal sync pulse.  Active low
+								              vs,        // Vertical sync pulse.  Active low
+												  pixel_clk, // 25 MHz pixel clock output
+												  blank,     // Blanking interval indicator.  Active low.
+												  sync,      // Composite Sync signal.  Active low.  We don't use it in this lab,
+												  DrawX,     // horizontal coordinate
+								              DrawY);
+	
+	
 endmodule
