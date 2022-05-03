@@ -37,7 +37,8 @@ sdram_pll SDRAM_PLL (RESET, CLK, MAIN_CLK, c1, locked); // use c1 for DRAM (for 
   
 HexDriver hex0(LEDR[3:0], {1'b1, HEX0});
 
-logic [15:0] OCM_ADDR_A, OCM_ADDR_B, OCM_DATAIN_A, OCM_DATAIN_B, OCM_DATAOUT_A, OCM_DATAOUT_B;
+logic [18:0] OCM_ADDR_A, OCM_ADDR_B;
+logic [3:0] OCM_DATAIN_A, OCM_DATAIN_B, OCM_DATAOUT_A, OCM_DATAOUT_B;
 logic OCM_WE_A, OCM_WE_B;
 
 /*
@@ -73,7 +74,7 @@ always_comb begin
 		VGA_G = 0;
 	end else begin
 		// Drawing code
-		VGA_R = OCM_BUFF[3:0];
+		VGA_R = OCM_BUFF;
 		VGA_B = 0;
 		VGA_G = 0;
 	end
@@ -85,11 +86,14 @@ logic pixel_clk, blank, sync;
 logic [9:0] RTX, RTY;
 
 logic [1:0] OCM_STATE;
-logic [15:0] OCM_BUFF;
+logic [3:0] OCM_BUFF;
+logic [3:0] WRITE_VAL;
 
+logic [10:0] slow_clock;
 
 always_ff @ (posedge MAIN_CLK) begin
 	OCM_STATE <= OCM_STATE + 1; // controls the state of the system
+	slow_clock <= slow_clock + 1;
 end
 
 always_ff @ (posedge MAIN_CLK) begin
@@ -97,23 +101,34 @@ always_ff @ (posedge MAIN_CLK) begin
 		// the data should be ready by now
 		OCM_BUFF <= OCM_DATAOUT_A;
 		
-		if(RTX < 639)
-			RTX <= RTX + 1;
-		else 
-			RTX <= 0; // loop RTX
+		if(slow_clock < 3'b100) begin // only update RTX if slow_clock is ticked
+			if(RTX < 639)
+				RTX <= RTX + 1;
+			else begin
+				RTX <= 0; // loop RTX
+			
+				if(RTY < 479)
+					RTY <= RTY + 1;
+				else begin
+					RTY <= 0;
+					WRITE_VAL <= WRITE_VAL + 1;
+				end	
+			end
+		end
 	end
 end
 
+
 always_comb begin
 	if(OCM_STATE == 2'b00) begin // READ INIT
-		OCM_ADDR_A = DrawX; // test reading where the column doesn't matter
+		OCM_ADDR_A = DrawX + 640 * DrawY; // test reading where the column doesn't matter
 		OCM_WE_A = 1'b0;
 		OCM_DATAIN_A = 0; // no data in
 	end else if (OCM_STATE == 2'b01) begin // GET THE READ OUTPUT, WRITE DATA
-		OCM_ADDR_A = RTX; // test reading where the column doesn't matter
+		OCM_ADDR_A = RTX + 640 * RTY; // test reading where the column doesn't matter
 		OCM_WE_A = 1'b1; // write enable
-		if((RTX / 64) % 2 == 1)
-			OCM_DATAIN_A = 4'b1111; // no data in
+		if(((RTX / 64) % 2) ^ ((RTY / 64) % 2))
+			OCM_DATAIN_A = WRITE_VAL; 
 		else
 			OCM_DATAIN_A = 4'b0011;
 	end else if (OCM_STATE == 2'b10) begin

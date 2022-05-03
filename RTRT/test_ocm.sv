@@ -1,14 +1,14 @@
 module  test_ocm
 (
-		input [15:0] ADDRESS,
+		input [18:0] ADDRESS,
 		input CLK,
-		input [15:0] DATA_IN,
+		input [18:0] DATA_IN,
 		input WE, 
-		output logic [15:0] DATAOUT
+		output logic [3:0] DATAOUT
 );
 
 // mem has width of 16 bits and a total of 64000 addresses
-logic [15:0] mem [64000];
+logic [3:0] mem [307200]; // each pixel is stored in 4 bit address
 
 
 
