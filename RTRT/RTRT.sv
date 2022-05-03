@@ -34,33 +34,14 @@ logic RESET;
 assign RESET = ~KEY[0];
 
 sdram_pll SDRAM_PLL (RESET, CLK, MAIN_CLK, c1, locked); // use c1 for DRAM (for now, we have no DRAM), c0 for everything else
-  
-HexDriver hex0(LEDR[3:0], {1'b1, HEX0});
 
-logic [18:0] OCM_ADDR_A, OCM_ADDR_B;
-logic [3:0] OCM_DATAIN_A, OCM_DATAIN_B, OCM_DATAOUT_A, OCM_DATAOUT_B;
-logic OCM_WE_A, OCM_WE_B;
+logic [18:0] OCM_ADDR_A;
+logic [3:0] OCM_DATAIN_A, OCM_DATAOUT_A;
+logic OCM_WE_A;
 
-/*
-A_READ -> used for VGA output
-A_WRITE -> used by the RT cores
-
-B -> used for the frame buffer manager
-*/							 
-
-//ocm ONCHIP(
-//	OCM_ADDR_A,
-//	OCM_ADDR_B,
-//	MAIN_CLK,
-//	OCM_DATAIN_A,
-//	OCM_DATAIN_B,
-//	OCM_WE_A,
-//	OCM_WE_B,
-//	OCM_DATAOUT_A,
-//	OCM_DATAOUT_B);
 
 // Single port test for frame buffer in OCM alone
-test_ocm ONCHIP  (
+single_port_ocm ONCHIP  (
 	OCM_ADDR_A,
 	MAIN_CLK,
 	OCM_DATAIN_A,
@@ -127,12 +108,9 @@ always_comb begin
 	end else if (OCM_STATE == 2'b01) begin // GET THE READ OUTPUT, WRITE DATA
 		OCM_ADDR_A = RTX + 640 * RTY; // test reading where the column doesn't matter
 		OCM_WE_A = 1'b1; // write enable
-		if(((RTX / 64) % 2) ^ ((RTY / 64) % 2))
-			OCM_DATAIN_A = WRITE_VAL; 
-		else
-			OCM_DATAIN_A = 4'b0011;
+		OCM_DATAIN_A = WRITE_VAL;
 	end else if (OCM_STATE == 2'b10) begin
-		// do nothing state... for now
+		// do nothing state... for now; In the future we may use this for other purposes
 		OCM_ADDR_A = 0; 
 		OCM_WE_A = 0;
 		OCM_DATAIN_A = 0;

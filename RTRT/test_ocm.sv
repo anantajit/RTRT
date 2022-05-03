@@ -1,4 +1,4 @@
-module  test_ocm
+module single_port_ocm
 (
 		input [18:0] ADDRESS,
 		input CLK,
