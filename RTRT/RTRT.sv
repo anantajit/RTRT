@@ -72,21 +72,63 @@ always_comb begin
 		VGA_B = 0;
 		VGA_G = 0;
 	end else begin
-		if((DrawX/20)%2 ^ (DrawY/20)%2) begin
-			VGA_R = 4'b1111;
-			VGA_B = 0;
-			VGA_G = 0;
-		end else begin
-			VGA_R = 4'b0;
-			VGA_B = 0;
-			VGA_G = 0;
-		end
+		// Drawing code
+		VGA_R = OCM_BUFF[3:0];
+		VGA_B = 0;
+		VGA_G = 0;
 	end
-
 end
 
 logic  [9:0] DrawX, DrawY;
 logic pixel_clk, blank, sync;
+
+logic [9:0] RTX, RTY;
+
+logic [1:0] OCM_STATE;
+logic [15:0] OCM_BUFF;
+
+
+always_ff @ (posedge MAIN_CLK) begin
+	OCM_STATE <= OCM_STATE + 1; // controls the state of the system
+end
+
+always_ff @ (posedge MAIN_CLK) begin
+	if(OCM_STATE == 2'b01) begin
+		// the data should be ready by now
+		OCM_BUFF <= OCM_DATAOUT_A;
+		
+		if(RTX < 639)
+			RTX <= RTX + 1;
+		else 
+			RTX <= 0; // loop RTX
+	end
+end
+
+always_comb begin
+	if(OCM_STATE == 2'b00) begin // READ INIT
+		OCM_ADDR_A = DrawX; // test reading where the column doesn't matter
+		OCM_WE_A = 1'b0;
+		OCM_DATAIN_A = 0; // no data in
+	end else if (OCM_STATE == 2'b01) begin // GET THE READ OUTPUT, WRITE DATA
+		OCM_ADDR_A = RTX; // test reading where the column doesn't matter
+		OCM_WE_A = 1'b1; // write enable
+		if((RTX / 64) % 2 == 1)
+			OCM_DATAIN_A = 4'b1111; // no data in
+		else
+			OCM_DATAIN_A = 4'b0011;
+	end else if (OCM_STATE == 2'b10) begin
+		// do nothing state... for now
+		OCM_ADDR_A = 0; 
+		OCM_WE_A = 0;
+		OCM_DATAIN_A = 0;
+	end else begin
+		// do nothing state for now
+		OCM_ADDR_A = 0; 
+		OCM_WE_A = 0;
+		OCM_DATAIN_A = 0;
+	end 
+end
+
 
 vga_controller VGA_CONTROLLER (MAIN_CLK, RESET, VGA_HS,        // Horizontal sync pulse.  Active low
 								              VGA_VS,        // Vertical sync pulse.  Active low

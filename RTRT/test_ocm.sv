@@ -1,11 +1,10 @@
 module  test_ocm
 (
-		input [15:0] write_address,
-		input Clk,
-		input [15:0] data_In,
-		input we, 
-		input [15:0] read_address,
-		output logic [15:0] data_Out
+		input [15:0] ADDRESS,
+		input CLK,
+		input [15:0] DATA_IN,
+		input WE, 
+		output logic [15:0] DATAOUT
 );
 
 // mem has width of 16 bits and a total of 64000 addresses
@@ -13,10 +12,10 @@ logic [15:0] mem [64000];
 
 
 
-always_ff @ (posedge Clk) begin
-	if (we)
-		mem[write_address] <= data_In;
-	data_Out<= mem[read_address];
+always_ff @ (posedge CLK) begin
+	if (WE)
+		mem[ADDRESS] <= DATA_IN;
+	DATAOUT<= mem[ADDRESS];
 end
 
 endmodule
