@@ -17,7 +17,7 @@ This is a massive state machine that runs through the raytracing code. It accept
 
 /* HARDCODE SCENE FOR NOW */
 logic [15:0] f = 16'd1000;
-logic [15:0] sphere[4] = '{16'd320, 16'd240,  16'd1100, 16'd100}; // ball centered on a screen
+logic [15:0] sphere[4] = '{16'd220, 16'd140,  16'd1100, 16'd100}; // ball centered on a screen
 logic [15:0] camera[3] = '{16'd320, 16'd240, 0};
 
 

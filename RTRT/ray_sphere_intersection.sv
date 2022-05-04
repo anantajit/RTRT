@@ -55,14 +55,14 @@ always_ff @ (posedge CLK) begin
 		end
 	end
 	
-	6'd1 : begin // compute a, c
+	6'd100 : begin // compute a, c
 		a <= (p1[0] - p0[0]) * (p1[0] - p0[0]) + (p1[1] - p0[1]) * (p1[1] - p0[1]) + (p1[2] - p0[2]) * (p1[2] - p0[2]); // distance between points
 		b <= 2 * (p1[0] - p0[0]) * ( p0[0] - sphere[0]) + 2 * (p1[1] - p0[1]) * ( p0[1] - sphere[1]) + 2 * (p1[2] - p0[2]) * ( p0[2] - sphere[2]);
 		c <= ( p0[0] - sphere[0]) * ( p0[0] - sphere[0]) + ( p0[1] - sphere[1]) * ( p0[1] - sphere[1]) + ( p0[2] - sphere[2]) * ( p0[2] - sphere[2]) - sphere[3] * sphere[3];
 		state <= state + 1;
 	end
 	
-	6'd2 : begin // check condition
+	6'd200 : begin // check condition
 	
 		LC[0] <= b * b;
 		LC[1] <= 4 * a * c;
@@ -70,7 +70,7 @@ always_ff @ (posedge CLK) begin
 		state <= state + 1;
 	end
 	
-	6'd3 : begin
+	6'd300 : begin
 		if(LC[0] > LC[1]) begin // collision
 			reg_COLLIDE <= 1'b1;
 		end else begin // no collision
