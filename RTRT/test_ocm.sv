@@ -2,7 +2,7 @@ module single_port_ocm
 (
 		input [18:0] ADDRESS,
 		input CLK,
-		input [18:0] DATA_IN,
+		input [3:0] DATA_IN,
 		input WE, 
 		output logic [3:0] DATAOUT
 );

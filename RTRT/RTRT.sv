@@ -70,11 +70,9 @@ logic [1:0] OCM_STATE;
 logic [3:0] OCM_BUFF;
 logic [3:0] WRITE_VAL;
 
-logic [10:0] slow_clock;
 
 always_ff @ (posedge MAIN_CLK) begin
 	OCM_STATE <= OCM_STATE + 1; // controls the state of the system
-	slow_clock <= slow_clock + 1;
 end
 
 always_ff @ (posedge MAIN_CLK) begin
@@ -82,7 +80,7 @@ always_ff @ (posedge MAIN_CLK) begin
 		// the data should be ready by now
 		OCM_BUFF <= OCM_DATAOUT_A;
 		
-		if(slow_clock < 3'b100) begin // only update RTX if slow_clock is ticked
+		if(RTC_READY) begin // only update RTX if the write enable from the raytracers is high. A write occurs this write cycle, so we can update RTX, RTY
 			if(RTX < 639)
 				RTX <= RTX + 1;
 			else begin
@@ -92,33 +90,57 @@ always_ff @ (posedge MAIN_CLK) begin
 					RTY <= RTY + 1;
 				else begin
 					RTY <= 0;
-					WRITE_VAL <= WRITE_VAL + 1;
 				end	
 			end
 		end
 	end
 end
 
+// RTC CONTROLLER
+
+always_ff @ (posedge MAIN_CLK) begin
+	if(RTC_READY && OCM_STATE == 2'b10) begin
+		// All the appropriate data has been set. We can toggle the ready signal.
+		RTC_ENABLE <= 1'b1; // set the ready signal to high.
+	end else if (OCM_STATE == 0) begin
+		// Here, it has guaranteed been high for two clock cycles. set to low. It should hold all of its values.
+		RTC_ENABLE <= 1'b0; 
+	end
+end
+
+RTcore RTC (MAIN_CLK, RTC_ENABLE, RTX, RTY[8:0], RTC_READY, RTC_OUTPUT);
+
+logic RTC_ENABLE, RTC_READY;
+logic [3:0] RTC_OUTPUT;
+
+assign OCM_DATAIN_A = RTC_OUTPUT;
 
 always_comb begin
 	if(OCM_STATE == 2'b00) begin // READ INIT
 		OCM_ADDR_A = DrawX + 640 * DrawY; // test reading where the column doesn't matter
 		OCM_WE_A = 1'b0;
-		OCM_DATAIN_A = 0; // no data in
+//		OCM_DATAIN_A = 0; // no data in
+		
 	end else if (OCM_STATE == 2'b01) begin // GET THE READ OUTPUT, WRITE DATA
+		// Only write if RTC is ready
 		OCM_ADDR_A = RTX + 640 * RTY; // test reading where the column doesn't matter
-		OCM_WE_A = 1'b1; // write enable
-		OCM_DATAIN_A = WRITE_VAL;
+		
+		
+		if(RTC_READY) begin // if the write is ready, perform the write!
+			OCM_WE_A = 1'b1; // write enable
+		end else begin
+			OCM_WE_A = 1'b0; // don't write if the RTC is not ready
+		end
 	end else if (OCM_STATE == 2'b10) begin
 		// do nothing state... for now; In the future we may use this for other purposes
 		OCM_ADDR_A = 0; 
 		OCM_WE_A = 0;
-		OCM_DATAIN_A = 0;
+//		OCM_DATAIN_A = 0;
 	end else begin
 		// do nothing state for now
 		OCM_ADDR_A = 0; 
 		OCM_WE_A = 0;
-		OCM_DATAIN_A = 0;
+//		OCM_DATAIN_A = 0;
 	end 
 end
 
