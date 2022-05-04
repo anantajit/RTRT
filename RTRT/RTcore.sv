@@ -18,6 +18,7 @@ This is a massive state machine that runs through the raytracing code. It accept
 /* HARDCODE SCENE FOR NOW */
 logic [15:0] f = 16'd1000;
 logic [15:0] sphere[4] = '{16'd220, 16'd140,  16'd1100, 16'd100}; // ball centered on a screen
+logic [15:0] light[4] = '{16'd50, 16'd50, 16'd1000, 16'hFFFF}; // light source with full intensity
 logic [15:0] camera[3] = '{16'd320, 16'd240, 0};
 
 
@@ -32,10 +33,8 @@ logic [3:0] RSI_THRESHOLD;
 // RSI OUTPUTS
 logic RSI_READY;
 logic RSI_COLLIDE;
-
-// RSI UNUSED
-logic [15:0] RSI_pint0[3]; // not valid
-logic [15:0] RSI_pint1[3]; // not valid
+logic [15:0] RSI_pint0[3];
+logic [15:0] RSI_pint1[3];
 
 
 ray_sphere_intersection RSI(CLK, RSI_ENABLE, sphere, RSI_p0, RSI_p1, RSI_BOUNDED, RSI_THRESHOLD, 
@@ -61,6 +60,15 @@ always_ff @ (posedge CLK) begin
 			screen_pixel[1] <= Y;
 			screen_pixel[2] <= f;
 			reg_OUTPUT_READY <= 1'b0; 
+			
+			if(X == 0 && Y == 0) begin // every time we hit the top corner, move circle to the right
+				// increment pixel test
+				if(sphere[0] < 540)
+					sphere[0] <= sphere[0] + 1;
+				else
+					sphere[0] <= 100;
+			end
+			
 		end
 	end
 	
@@ -88,9 +96,7 @@ always_ff @ (posedge CLK) begin
 		end else begin
 			reg_OUTPUT_PIXEL <= 4'b0; // color black
 		end
-		
-		// return to ready state
-		state <= 0;
+		state <= 0; // reset state
 	end
 	
 	default : begin
