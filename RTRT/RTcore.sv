@@ -44,6 +44,7 @@ ray_sphere_intersection RSI(CLK, RSI_ENABLE, sphere, RSI_p0, RSI_p1, RSI_BOUNDED
 logic [5:0] state = 0;
 
 logic [15:0] screen_pixel[3];
+logic [15:0] light_position[3];
 
 
 always_ff @ (posedge CLK) begin
@@ -90,13 +91,46 @@ always_ff @ (posedge CLK) begin
 	
 	6'd4 : begin
 		// the collision result is ready
-		reg_OUTPUT_READY <= 1'b1;
 		if(RSI_COLLIDE) begin
-			reg_OUTPUT_PIXEL <= 4'b1111; // color white
+			state <= state + 1;
+			// copy the light's position
+			light_position[0] <= light[0];
+			light_position[1] <= light[1];
+			light_position[2] <= light[2];
 		end else begin
 			reg_OUTPUT_PIXEL <= 4'b0; // color black
+			reg_OUTPUT_READY <= 1'b1;
+			state <= 0; // reset state
 		end
+	end
+	
+	6'd5 : begin 
+	
+		// check if the ray to this light source intersects the sphere at any points.
+		RSI_ENABLE <= 1'b1; // enable intersector
+		RSI_p0 <= RSI_pint1; // start the ray from the closest intersection point
+		RSI_p1 <= light_position; // set the destination ray as the light source
+		RSI_BOUNDED <= 1'b1; // bounded collision
+		RSI_THRESHOLD <= 4'd10; // threshold of 10, worked in sim
+		state <= state + 1;
+	
+	end
+	
+	6'd6 : begin // wait state
+		RSI_ENABLE <= 1'b0; // stop the enable (only one calculation)
+		if(RSI_READY) begin
+			state <= state + 1;
+		end
+	end
+	
+	6'd7 : begin
+		reg_OUTPUT_READY <= 1'b1;
 		state <= 0; // reset state
+		if(RSI_COLLIDE) begin // this area is blocked by the sphere
+			reg_OUTPUT_PIXEL <= 4'b10; // color dark grey
+		end else begin
+			reg_OUTPUT_PIXEL <= 4'b1111; // for now, color white
+		end
 	end
 	
 	default : begin
