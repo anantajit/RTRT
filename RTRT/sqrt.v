@@ -64,7 +64,7 @@ module sqrt (
 				// synopsys translate_on
 				);
 	defparam
-		ALTSQRT_component.pipeline = 1,
+		ALTSQRT_component.pipeline = 64,
 		ALTSQRT_component.q_port_width = 64,
 		ALTSQRT_component.r_port_width = 65,
 		ALTSQRT_component.width = 128;
@@ -78,7 +78,7 @@ endmodule
 // Retrieval info: PRIVATE: INTENDED_DEVICE_FAMILY STRING "MAX 10"
 // Retrieval info: PRIVATE: SYNTH_WRAPPER_GEN_POSTFIX STRING "0"
 // Retrieval info: LIBRARY: altera_mf altera_mf.altera_mf_components.all
-// Retrieval info: CONSTANT: PIPELINE NUMERIC "1"
+// Retrieval info: CONSTANT: PIPELINE NUMERIC "64"
 // Retrieval info: CONSTANT: Q_PORT_WIDTH NUMERIC "64"
 // Retrieval info: CONSTANT: R_PORT_WIDTH NUMERIC "65"
 // Retrieval info: CONSTANT: WIDTH NUMERIC "128"
@@ -95,5 +95,5 @@ endmodule
 // Retrieval info: GEN_FILE: TYPE_NORMAL sqrt.cmp FALSE
 // Retrieval info: GEN_FILE: TYPE_NORMAL sqrt.bsf FALSE
 // Retrieval info: GEN_FILE: TYPE_NORMAL sqrt_inst.v FALSE
-// Retrieval info: GEN_FILE: TYPE_NORMAL sqrt_bb.v TRUE
+// Retrieval info: GEN_FILE: TYPE_NORMAL sqrt_bb.v FALSE
 // Retrieval info: LIB_FILE: altera_mf

@@ -108,6 +108,8 @@ always_ff @ (posedge MAIN_CLK) begin
 	end
 end
 
+
+//TODO: add a clock halving module
 RTcore RTC (MAIN_CLK, RTC_ENABLE, RTX, RTY[8:0], RTC_READY, RTC_OUTPUT);
 
 logic RTC_ENABLE, RTC_READY;

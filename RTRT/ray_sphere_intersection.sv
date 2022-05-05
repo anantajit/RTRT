@@ -58,10 +58,34 @@ assign pint1 = reg_pint1;
 
 // Result requires 10 clock cycles. We'll give it 100 clocks anyway
 sqrt SQRT_A (
-	MAIN_CLK,
+	CLK,
 	SQRT_A_IN,
 	SQRT_A_OUT,
 	SQRT_A_REMAINDER);
+
+
+logic [127:0] NUM[12], QUO[12];
+logic [63:0] DEN[12];
+
+logic [127:0] MULT_A[12], MULT_B[12];
+logic [127:0] PRODUCT[12];
+
+logic [63:0] SQUARE_IN[12];
+logic [127:0] SQUARE_OUT[12];
+
+
+
+
+genvar i;
+
+generate
+	for (i = 0; i < 12; i++) begin: arithmetic_block
+		divider divider_i(CLK, NUM[i], DEN[i], QUO[i]);
+		multiplier multiplier_i(CLK, MULT_A[i], MULT_B[i], PRODUCT[i]);
+		square square_i(CLK, SQUARE_IN[i], SQUARE_OUT[i]);
+	end: arithmetic_block
+endgenerate
+
 
 always_ff @ (posedge CLK) begin
 
@@ -82,19 +106,71 @@ always_ff @ (posedge CLK) begin
 		end
 	end
 	
-	16'd1 : begin // compute a, c
-		a <= (p1[0] - p0[0]) * (p1[0] - p0[0]) + (p1[1] - p0[1]) * (p1[1] - p0[1]) + (p1[2] - p0[2]) * (p1[2] - p0[2]); // distance between points
-		b <= 2 * (p1[0] - p0[0]) * ( p0[0] - sphere[0]) + 2 * (p1[1] - p0[1]) * ( p0[1] - sphere[1]) + 2 * (p1[2] - p0[2]) * ( p0[2] - sphere[2]);
-		c <= ( p0[0] - sphere[0]) * ( p0[0] - sphere[0]) + ( p0[1] - sphere[1]) * ( p0[1] - sphere[1]) + ( p0[2] - sphere[2]) * ( p0[2] - sphere[2]) - sphere[3] * sphere[3];
+	16'd1 : begin 
+		// A
+		SQUARE_IN[0] <= p1[0] - p0[0];
+		SQUARE_IN[1] <= p1[1] - p0[1];
+		SQUARE_IN[2] <= p1[2] - p0[2];
+		
+		// B computation requires another multiplication by two for all values... keep in mind!
+		MULT_A[0] <= p1[0] - p0[0];
+		MULT_B[0] <= p0[0] - sphere[0];
+		
+		MULT_A[1] <= p1[1] - p0[1];
+		MULT_B[1] <= p0[1] - sphere[1];
+		
+		MULT_A[2] <= p1[2] - p0[2];
+		MULT_B[2] <= p0[2] - sphere[2];
+		
+		// C
+		
+		SQUARE_IN[3] <= p0[0] - sphere[0];
+		SQUARE_IN[4] <= p0[1] - sphere[1];
+		SQUARE_IN[5] <= p0[2] - sphere[2];
+		
+		SQUARE_IN[6] <= sphere[3];
+		
 		state <= state + 1;
+	end
+	
+	16'd32 : begin
+		a <= SQUARE_OUT[0] + SQUARE_OUT[1] + SQUARE_OUT[2];
+		c <= SQUARE_OUT[3] + SQUARE_OUT[4] + SQUARE_OUT[5] - SQUARE_OUT[6];
+		
+		MULT_A[0] <= PRODUCT[0] + PRODUCT[1] + PRODUCT[2];
+		MULT_B[0] <= 2'd2; // multiply by two
+		
+		state <= state + 1;
+	end
+	
+	16'd64 : begin
+		b <= PRODUCT[0];
+		state <= state + 1;
+		
+		// A, B, C have been set!
 	end
 	
 	16'd500 : begin // check condition
 	
-		LC[0] <= b * b;
-		LC[1] <= 4 * a * c;
+		SQUARE_IN[0] <= b;
+		
+		MULT_A[0] <= a;
+		MULT_B[0] <= c;
 	
 		state <= state + 1;
+	end
+	
+	16'd532 : begin
+		LC[0] <= SQUARE_OUT[0];
+		
+		MULT_A[0] <= PRODUCT[0];
+		MULT_B[0] <= 4;
+		
+		state <= state + 1;
+	end
+	
+	16'd564 : begin
+		LC[1] <= PRODUCT[0];
 	end
 	
 	16'd1000 : begin
@@ -112,14 +188,20 @@ always_ff @ (posedge CLK) begin
 	16'd1500 : begin
 		// compute up to two collision points... at least one of these will be valid.
 		SQRT_A_IN <= LC[0] - LC[1]; // b^2 - 4ac
-		SC[0] <= a/DEROUNDER; // rounding element
+		NUM[0] <= a;
+		DEN[0] <= DEROUNDER;
+		state <= state + 1;
+	end
+	
+	16'd1600 : begin
+		SC[0] <= QUO[0];
 		state <= state + 1;
 	end
 	
 	16'd2000 : begin // sqrt result stable... solve quadratic (almost)
 		T1 <= -b + SQRT_A_OUT - SC[0];
 		T2 <= -b - SQRT_A_OUT - SC[0];
-		SC[0] <= 2 * a;
+		SC[0] <= 2 * a; // I sure hope we can do this in one clock cycle :(
 		state <= state + 1;
 	end
 	
@@ -144,14 +226,76 @@ always_ff @ (posedge CLK) begin
 		end
 	end
 	
+	16'd2900 : begin
+		MULT_A[0] <= T1;
+		MULT_B[0] <= p1[0];
+		
+		MULT_A[1] <= SC[0] - T1;
+		MULT_B[1] <= p0[0];
+		
+		MULT_A[2] <= T1;
+		MULT_B[2] <= p1[1];
+		
+		MULT_A[3] <= SC[0] - T1;
+		MULT_B[3] <= p0[1];
+		
+		MULT_A[4] <= T1;
+		MULT_B[4] <= p1[2];
+		
+		MULT_A[5] <= SC[0] - T1;
+		MULT_B[5] <= p0[2];
+		
+		MULT_A[6] <= T1;
+		MULT_B[6] <= p1[0];
+		
+		MULT_A[7] <= SC[0] - T2;
+		MULT_B[7] <= p0[0];
+		
+		MULT_A[8] <= T2;
+		MULT_B[8] <= p1[1];
+		
+		MULT_A[9] <= SC[0] - T2;
+		MULT_B[9] <= p0[1];
+		
+		MULT_A[10] <= T2;
+		MULT_B[10] <= p1[2];
+		
+		MULT_A[11] <= SC[0] - T2;
+		MULT_B[11] <= p0[2];
+		
+		
+	end
+	
 	16'd3000 : begin
-		reg_pint0[0] = (T1 * p1[0] + (SC[0] - T1) * p0[0]) / SC[0];
-      reg_pint0[1] = (T1 * p1[1] + (SC[0] - T1) * p0[1]) / SC[0];
-      reg_pint0[2] = (T1 * p1[2] + (SC[0] - T1) * p0[2]) / SC[0];
-        
-      reg_pint1[0] = (T2 * p1[0] + (SC[0] - T2) * p0[0]) / SC[0];
-      reg_pint1[1] = (T2 * p1[1] + (SC[0] - T2) * p0[1]) / SC[0];
-      reg_pint1[2] = (T2 * p1[2] + (SC[0] - T2) * p0[2]) / SC[0];
+		NUM[0] <= PRODUCT[0] + PRODUCT[1];
+		DEN[0] <= SC[0];
+		
+		NUM[1] <= PRODUCT[2] + PRODUCT[3];
+		DEN[1] <= SC[0];
+		
+		NUM[2] <= PRODUCT[4] + PRODUCT[5];
+		DEN[2] <= SC[0];
+		
+		NUM[3] <= PRODUCT[6] + PRODUCT[7];
+		DEN[3] <= SC[0];
+		
+		NUM[4] <= PRODUCT[8] + PRODUCT[9];
+		DEN[4] <= SC[0];
+		
+		NUM[5] <= PRODUCT[10] + PRODUCT[11];
+		DEN[5] <= SC[0];
+		
+		state <= state + 1;
+	end
+	
+	16'd3200 : begin
+		reg_pint0[0] <= QUO[0];
+		reg_pint0[1] <= QUO[1];
+		reg_pint0[2] <= QUO[2];
+	
+		reg_pint1[0] <= QUO[3];
+		reg_pint1[1] <= QUO[4];
+		reg_pint1[2] <= QUO[5];
 		
 		state <= state + 1;
 	end
