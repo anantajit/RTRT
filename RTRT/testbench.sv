@@ -7,8 +7,8 @@ timeprecision 1ns;
 
 logic CLK;
 logic ENABLE = 0;
-logic [9:0] X = 1;
-logic [8:0] Y = 0;
+logic [9:0] X = 320; // start at center of screen... good for debugging
+logic [8:0] Y = 240;
 logic OUTPUT_READY = 0;
 logic [3:0] OUTPUT_PIXEL;
 

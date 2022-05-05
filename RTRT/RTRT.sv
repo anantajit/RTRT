@@ -147,6 +147,10 @@ always_comb begin
 end
 
 
+HexDriver hex0 (RTX[3:0], HEX0);
+HexDriver hex1 (RTY[3:0], HEX1);
+HexDriver hex2 (RTC_OUTPUT, HEX2);
+
 vga_controller VGA_CONTROLLER (MAIN_CLK, RESET, VGA_HS,        // Horizontal sync pulse.  Active low
 								              VGA_VS,        // Vertical sync pulse.  Active low
 												  pixel_clk, // 25 MHz pixel clock output

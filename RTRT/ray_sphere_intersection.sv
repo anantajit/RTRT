@@ -47,9 +47,9 @@ logic signed [63:0] SC[64];
 logic signed [127:0] LC[64]; // large caches... these are not meant to be used unless absolutely necessary
 
 
-logic	[127:0]  SQRT_A_IN = 0;
-logic	[63:0]  SQRT_A_OUT = 0;
-logic	[64:0]  SQRT_A_REMAINDER = 0; // dont care about this 
+logic [127:0]  SQRT_A_IN = 0;
+logic [63:0]  SQRT_A_OUT = 0;
+logic [64:0]  SQRT_A_REMAINDER = 0; // dont care about this 
 
 logic [15:0] reg_pint0[3];
 assign pint0 = reg_pint0;
@@ -64,14 +64,14 @@ sqrt SQRT_A (
 	SQRT_A_REMAINDER);
 
 
-logic [127:0] NUM[12], QUO[12];
-logic [63:0] DEN[12];
+logic signed [127:0] NUM[12], QUO[12];
+logic signed [63:0] DEN[12];
 
-logic [127:0] MULT_A[12], MULT_B[12];
-logic [127:0] PRODUCT[12];
+logic signed [127:0] MULT_A[12], MULT_B[12];
+logic signed [127:0] PRODUCT[12];
 
-logic [63:0] SQUARE_IN[12];
-logic [127:0] SQUARE_OUT[12];
+logic signed [63:0] SQUARE_IN[12];
+logic signed [127:0] SQUARE_OUT[12];
 
 
 
@@ -171,6 +171,7 @@ always_ff @ (posedge CLK) begin
 	
 	16'd564 : begin
 		LC[1] <= PRODUCT[0];
+		state <= state + 1;
 	end
 	
 	16'd1000 : begin
@@ -263,7 +264,7 @@ always_ff @ (posedge CLK) begin
 		MULT_A[11] <= SC[0] - T2;
 		MULT_B[11] <= p0[2];
 		
-		
+		state <= state + 1;
 	end
 	
 	16'd3000 : begin
