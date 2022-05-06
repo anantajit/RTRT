@@ -80,7 +80,7 @@ genvar i;
 
 generate
 	for (i = 0; i < 12; i++) begin: arithmetic_block
-		divider divider_i(CLK, NUM[i], DEN[i], QUO[i]);
+		divider divider_i(.CLK, .numerator(NUM[i]), .denominator(DEN[i]), .quotient(QUO[i]));
 		multiplier multiplier_i(CLK, MULT_A[i], MULT_B[i], PRODUCT[i]);
 		square square_i(CLK, SQUARE_IN[i], SQUARE_OUT[i]);
 	end: arithmetic_block
@@ -194,7 +194,7 @@ always_ff @ (posedge CLK) begin
 		state <= state + 1;
 	end
 	
-	16'd1600 : begin
+	16'd1700 : begin
 		SC[0] <= QUO[0];
 		state <= state + 1;
 	end

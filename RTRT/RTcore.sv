@@ -116,14 +116,14 @@ always_ff @ (posedge CLK) begin
 	
 	end
 	
-	6'd6 : begin // wait state
+	6'd7 : begin // wait state
 		RSI_ENABLE <= 1'b0; // stop the enable (only one calculation)
 		if(RSI_READY) begin
 			state <= state + 1;
 		end
 	end
 	
-	6'd7 : begin
+	6'd9 : begin
 		reg_OUTPUT_READY <= 1'b1;
 		state <= 0; // reset state
 		if(RSI_COLLIDE) begin // this area is blocked by the sphere

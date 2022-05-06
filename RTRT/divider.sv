@@ -1,10 +1,10 @@
 // This module takes 64 clock cycles to realize
 // TODO: replace numerator with 64 bit
 
-module divider(input CLK, input signed [63:0] numerator, input signed [63:0] denominator, output signed [63:0] quotient);
+module divider(input CLK, input signed [63:0] numerator, input signed [63:0] denominator, output signed [127:0] quotient);
 
 logic signed [63:0] reg_quotient;
-assign quotient = reg_quotient;
+assign quotient = 128'(signed'(reg_quotient));
 
 logic [7:0] slow_clock = 0;
 
