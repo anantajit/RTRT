@@ -57,7 +57,7 @@ always_comb begin
 		// Drawing code
 		VGA_R = OCM_BUFF;
 		VGA_B = 0;
-		VGA_G = 0;
+		VGA_G = OCM_BUFF;
 	end
 end
 
@@ -110,7 +110,7 @@ end
 
 
 //TODO: add a clock halving module
-RTcore RTC (MAIN_CLK, RTC_ENABLE, RTX, RTY[8:0], RTC_READY, RTC_OUTPUT);
+RTcore RTC (MAIN_CLK, RTC_ENABLE, RTX, RTY[8:0], RTC_READY, RTC_OUTPUT, SW);
 
 logic RTC_ENABLE, RTC_READY;
 logic [3:0] RTC_OUTPUT;

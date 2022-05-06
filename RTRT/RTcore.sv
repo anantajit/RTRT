@@ -4,7 +4,7 @@ This is a massive state machine that runs through the raytracing code. It accept
 
 // TODO: we require optimizations for this code. 
 
- module RTcore(input CLK, input ENABLE, input[9:0] X_in, input[8:0] Y_in, output OUTPUT_READY, output[3:0] OUTPUT_PIXEL);
+ module RTcore(input CLK, input ENABLE, input[9:0] X_in, input[8:0] Y_in, output OUTPUT_READY, output[3:0] OUTPUT_PIXEL, input [9:0] SW);
  // given an X, Y, returns the output
  
  logic reg_OUTPUT_READY = 1'b1; // initialize to allow writing
@@ -18,8 +18,10 @@ This is a massive state machine that runs through the raytracing code. It accept
 /* HARDCODE SCENE FOR NOW */
 logic [15:0] f = 16'd1000;
 logic [15:0] sphere[4] = '{16'd320, 16'd240,  16'd1100, 16'd100}; // ball centered on a screen
-logic [15:0] light[4] = '{16'd50, 16'd50, 16'd1000, 16'hFFFF}; // light source with full intensity
+logic [15:0] light[4] = '{16'd50, 16'd50, 16'd1000, 16'h0FFF}; // light source with full intensity. We leave the leading bit 0 for sign issues
 logic [15:0] camera[3] = '{16'd320, 16'd240, 0};
+logic [63:0] INTENSITY_CALIBRATION;
+assign INTENSITY_CALIBRATION = SW[9:0];
 
 
 //RSI controls
@@ -37,11 +39,27 @@ logic [15:0] RSI_pint0[3];
 logic [15:0] RSI_pint1[3];
 
 
+divider divider_i(CLK, NUM, DEN, QUO);
+multiplier multiplier_i(CLK, MULT_A, MULT_B, PRODUCT);
+square square_0(CLK, SQUARE_IN[0], SQUARE_OUT[0]);
+square square_1(CLK, SQUARE_IN[1], SQUARE_OUT[1]);
+square square_2(CLK, SQUARE_IN[2], SQUARE_OUT[2]);
+
+logic signed [127:0] NUM, QUO;
+logic signed [63:0] DEN;
+
+logic signed [127:0] MULT_A, MULT_B;
+logic signed [127:0] PRODUCT;
+
+logic signed [63:0] SQUARE_IN[3];
+logic signed [127:0] SQUARE_OUT[3];
+
+
 ray_sphere_intersection RSI(CLK, RSI_ENABLE, sphere, RSI_p0, RSI_p1, RSI_BOUNDED, RSI_THRESHOLD, 
 									RSI_READY, RSI_COLLIDE, RSI_pint0, RSI_pint1);
 
  
-logic [5:0] state = 0;
+logic [9:0] state = 0;
 
 logic [15:0] screen_pixel[3];
 logic [15:0] light_position[3];
@@ -65,7 +83,7 @@ always_ff @ (posedge CLK) begin
 			if(X == 0 && Y == 0) begin // every time we hit the top corner, move circle to the right
 				// increment pixel test
 				if(sphere[0] < 540)
-					sphere[0] <= sphere[0] + 1;
+					sphere[0] <= sphere[0] + 5;
 				else
 					sphere[0] <= 100;
 			end
@@ -124,13 +142,40 @@ always_ff @ (posedge CLK) begin
 	end
 	
 	6'd9 : begin
-		reg_OUTPUT_READY <= 1'b1;
-		state <= 0; // reset state
 		if(RSI_COLLIDE) begin // this area is blocked by the sphere
 			reg_OUTPUT_PIXEL <= 4'b10; // color dark grey
+			reg_OUTPUT_READY <= 1'b1;
+			state <= 0; // reset state
 		end else begin
-			reg_OUTPUT_PIXEL <= 4'b1111; // for now, color white
+			SQUARE_IN[0] <= light[0] - RSI_p0[0];
+			SQUARE_IN[1] <= light[1] - RSI_p0[1];
+			SQUARE_IN[2] <= light[2] - RSI_p0[2];
+			
+			MULT_A <= light[3];
+			MULT_B <= INTENSITY_CALIBRATION;
+			state <= state + 1;
 		end
+	end
+	
+	6'd41 : begin
+		// Squaring and multiplication is completed
+		DEN <= SQUARE_OUT[0] + SQUARE_OUT[1] + SQUARE_OUT[2];
+		NUM <= PRODUCT;
+		state <= state + 1;
+	end
+	
+	9'd105 : begin
+		// QUO contains a valid result
+				
+		reg_OUTPUT_READY <= 1'b1;
+		
+		state <= 0;
+		
+		if(QUO > 4'b1111)
+			reg_OUTPUT_PIXEL <= 4'b1111;
+		else
+			reg_OUTPUT_PIXEL <= QUO[3:0];
+
 	end
 	
 	default : begin

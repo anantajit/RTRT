@@ -1,4 +1,4 @@
-// This module takes 8 clock cycles to realize... increase this if we are running into timing issues
+// This module takes 16 clock cycles to realize... increase this if we are running into timing issues
 
 module square(input CLK, input signed [63:0] NUM, output signed [127:0] SQUARE);
 
