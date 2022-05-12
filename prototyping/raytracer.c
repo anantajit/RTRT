@@ -6,7 +6,7 @@
 enum { width = 640, height = 480 };
 
 const int INTENSITY_CALIBRATION = 75;
-const int DEROUNDER = 75;
+const int DEROUNDER = 25;
 const int ATTENUATION_CUTOFF = 25;
 const char ENABLE_OUTPUT = 1;
 
@@ -59,17 +59,17 @@ int raytracer(void) {
      */
     
     
-	int f = 1000; // smaller FOV means you can see more, but there will be more distortion
+	int f = 300; // smaller FOV means you can see more, but there will be more distortion
 	int camera[3] = {320, 240, 0};
     
     int color_idx[2][3] = {{1, 0, 0}, {0, 1, 0}};
     
 	// X, Y, Z, Radius
     const char SPHERE_COUNT = 2;
-    int sphere_array[SPHERE_COUNT][4] = {{320, 480, f + 200, 200}, {260, 170, f + 200, 50}};
+    int sphere_array[SPHERE_COUNT][4] = {{200, 240, f + 100, 100}, {260, 100, f + 200, 50}};
 	// X, Y, Z, Intensity... for a point source
     const char LIGHT_COUNT = 2;
-    int light_array[LIGHT_COUNT][4] = {{320, -100, f + 200, 150000}, {0, 350, f + 100, 50000}}; // light from the camera
+    int light_array[LIGHT_COUNT][4] = {{50, 50, f + 200, 150000}, {0, 350, f + 100, 50000}}; // light from the camera
     
     
     /* END OF SCENE INFORMATION...*/
@@ -113,6 +113,7 @@ int raytracer(void) {
 
 			if(intersect_sphere){
                 // check for intersection between the collision point and the light source
+
                 for(int light_idx = 0; light_idx < LIGHT_COUNT; light_idx++){
                     
                     int light[4];
